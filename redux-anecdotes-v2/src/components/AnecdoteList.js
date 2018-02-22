@@ -6,8 +6,9 @@ import anecdoteService from '../services/anecdotes'
 class AnecdoteList extends React.Component {
 	
 	voteAnecdote = async (anecdote) => {
-		const response = await anecdoteService.update({...anecdote, votes: anecdote.votes + 1})
-		this.props.vote(anecdote.id)
+		//await anecdoteService.update({...anecdote, votes: anecdote.votes + 1})
+		//this.props.vote(anecdote.id)
+		this.props.vote(anecdote)
 		this.props.setMessage(`Voted for message '${anecdote.content}'`)
 	}	
 	

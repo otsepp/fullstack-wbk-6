@@ -8,6 +8,8 @@
   }
 } */
 
+import anecdoteService from '../services/anecdotes'
+
 const initialState = []
 
 const CREATE = 'CREATE'
@@ -15,19 +17,34 @@ const VOTE = 'VOTE'
 const INIT = 'INIT'
 
 
-export const vote = (id) => {
-	return {type: VOTE, id}
+export const vote = (anecdote) => {
+	return async (dispatch) => {
+		await anecdoteService.update({...anecdote, votes: anecdote.votes + 1})
+		dispatch({
+			type: VOTE, id: anecdote.id
+		})
+	}
 }
 
-export const create = (anecdote) => {
-	return {type: CREATE, anecdote}
+export const create = (content) => {
+	return async (dispatch) => {
+		const newAnecdote = await anecdoteService.createNew(content)
+		dispatch({
+			type: CREATE, anecdote: newAnecdote
+		})
+	}
 }
 
 export const initialize = (data) => {
-	
-	return {
-		type: INIT, data
+	return async (dispatch) => {
+		const anecdotes = await anecdoteService.getAll()
+		dispatch({
+			type: INIT, data: anecdotes
+		})
 	}
+	/*return {
+		type: INIT, data
+	}*/
 }
 
 const anecdoteReducer = (store = initialState, action) => {
